@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta21
+kind: Config
+metadata:
+  name: microservices
+build:
+  artifacts:
+  - image: singhbalwinder/auth
+    context: ticketing/auth
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - ticketing/infra/k8s/auth-depl.yaml
