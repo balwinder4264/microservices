@@ -12,7 +12,7 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
-
+console.log("Its working")
 app.listen('3000', () => {
-    console.log("Listning on port 3000!!!!");
+    console.log("Listning on port 3000123!!!!");
 });

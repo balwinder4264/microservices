@@ -2,7 +2,7 @@ import express,{Request,Response} from "express";
 const router = express.Router();
 import {body,validationResult} from "express-validator"
 
-router.get("/api/users/signup",[
+router.post("/api/users/signup",[
     body('email')
     .isEmail()
     .withMessage('Email must be valid'),
