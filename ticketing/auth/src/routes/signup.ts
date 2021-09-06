@@ -2,8 +2,8 @@ import express,{Request,Response} from "express";
 const router = express.Router();
 import {body,validationResult} from "express-validator"
 import {RequestValidationError} from "../errors/request-validation"
-import {DatabaseConnectionError} from "../errors/database-connection-error"
 
+import {User} from "../models/user"
 router.post("/api/users/signup",[
     body('email')
     .isEmail()
@@ -12,20 +12,27 @@ router.post("/api/users/signup",[
     .trim()
     .isLength({min:4,max:20})
     .withMessage("PAssword must be between 4 to 20 words")
-],(req:Request,res:Response)=>{
+],async(req:Request,res:Response)=>{
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        throw new RequestValidationError(errors.array());
-        // throw new Error("Invalid Email or Password");
-        // return res.status(400).send(errors.array())
-    }
     const {email,password} = req.body;
+    
+    if(!errors.isEmpty()){
+        console.log("errors 1234:",errors)
+        throw new RequestValidationError(errors.array());
+    }
+    console.log("email:",email)
+    // return res.send({"eror":errors})
+    const exsistinguser = await User.findOne({email});
+   if(exsistinguser){
+       console.log("Email in Use check");
+       return res.send({});
+   }
+   const user = User.build({
+       email,password
+   })
+   await user.save();
+   res.status(200).send(user)
 
-    console.log("Creatin user created");
-    throw new DatabaseConnectionError();
-    // throw new Error("Database is down");
-    res.send({})
-    //new user 
 });
 
 export {router as signupRouter}

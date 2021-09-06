@@ -20,5 +20,5 @@ app.all('*',async()=>{
 app.use(errorHandler)
 console.log("Its working")
 app.listen('3000', () => {
-    console.log("Listning on port 300!!!!");
+    console.log("Listning on port 3000!");
 });
